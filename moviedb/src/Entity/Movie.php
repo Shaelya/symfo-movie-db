@@ -40,6 +40,7 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Casting", mappedBy="movie", orphanRemoval=true)
+     * @ORM\OrderBy({"creditOrder" = "ASC"})
      */
     private $castings;
 
