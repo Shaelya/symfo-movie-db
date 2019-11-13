@@ -39,14 +39,15 @@ class Movie
     private $genres;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Person", mappedBy="movies")
+     * @ORM\OneToMany(targetEntity="App\Entity\Casting", mappedBy="movie", orphanRemoval=true)
      */
-    private $people;
+    private $castings;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->genres = new ArrayCollection();
-        $this->people = new ArrayCollection();
+        $this->castings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,30 +120,34 @@ class Movie
     }
 
     /**
-     * @return Collection|Person[]
+     * @return Collection|Casting[]
      */
-    public function getPeople(): Collection
+    public function getCastings(): Collection
     {
-        return $this->people;
+        return $this->castings;
     }
 
-    public function addPerson(Person $person): self
+    public function addCasting(Casting $casting): self
     {
-        if (!$this->people->contains($person)) {
-            $this->people[] = $person;
-            $person->addMovie($this);
+        if (!$this->castings->contains($casting)) {
+            $this->castings[] = $casting;
+            $casting->setMovie($this);
         }
 
         return $this;
     }
 
-    public function removePerson(Person $person): self
+    public function removeCasting(Casting $casting): self
     {
-        if ($this->people->contains($person)) {
-            $this->people->removeElement($person);
-            $person->removeMovie($this);
+        if ($this->castings->contains($casting)) {
+            $this->castings->removeElement($casting);
+            // set the owning side to null (unless already changed)
+            if ($casting->getMovie() === $this) {
+                $casting->setMovie(null);
+            }
         }
 
         return $this;
     }
+
 }
