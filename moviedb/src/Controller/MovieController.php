@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Casting;
 use App\Entity\Movie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,8 @@ class MovieController extends AbstractController
     public function index()
     {
 
-        $movies = $this->getDoctrine()->getRepository(Movie::class)->findAll();
+        // $movies = $this->getDoctrine()->getRepository(Movie::class)->findAll();
+        $movies = $this->getDoctrine()->getRepository(Movie::class)->findAllOrderedByTitle();
 
         return $this->render('movie/index.html.twig', [
             'movies' => $movies,
@@ -27,8 +29,11 @@ class MovieController extends AbstractController
     public function singleMovie(Movie $movie)
     {
 
+        $cast = $this->getDoctrine()->getRepository(Casting::class)->findByMovieDQL($movie);
+
         return $this->render('movie/single.html.twig', [
             'movie' => $movie,
+            'cast' => $cast,
         ]);
     }
 }

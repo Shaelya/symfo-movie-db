@@ -19,6 +19,35 @@ class MovieRepository extends ServiceEntityRepository
         parent::__construct($registry, Movie::class);
     }
 
+    /**
+     * méthode qui permet d'ordonner les films par ordre alphabétique, avec le query builder (qb)
+     * @return Movie[] Returns an array of Movie objects
+     */
+    public function findAllOrderedByTitle()
+    {
+        $query = $this->createQueryBuilder('m')
+                      ->orderBy('m.title', 'ASC');
+
+        return $query->getQuery()->getResult();
+        ;
+    }
+
+    /**
+     *  Alternative : utiliser DQL (Doctrine Query Language )
+     * @return Movie[] Returns an array of Movie objects
+     */
+    public function findAllOrderedByTitleDQL()
+    {
+        return $this->getEntityManager()
+                    ->createQuery('
+                        SELECT m
+                        FROM App\Entity\Movie m
+                        ORDER BY m.title ASC
+                    ')
+                    ->getResult();
+        ;
+    }
+
     // /**
     //  * @return Movie[] Returns an array of Movie objects
     //  */

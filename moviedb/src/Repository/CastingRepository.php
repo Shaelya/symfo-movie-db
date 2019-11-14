@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Casting;
+use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -18,6 +19,48 @@ class CastingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Casting::class);
     }
+
+    /**
+     * Récupérer les castings d'un movie donné + le sinfos de Person
+     * Méthode DQL
+     * 
+     * @param Movie $movie
+     * @return Casting[]
+     */
+    public function findByMovieDQL($movie)
+    {
+        $query = $this->getEntityManager()
+                    ->createQuery('
+                        SELECT c, p
+                        FROM App\Entity\Casting c
+                        JOIN c.person p
+                        WHERE c.movie = :movie
+                    ')
+                    ->setParameter('movie', $movie);
+                    return $query->getResult();
+        ;
+    }
+
+
+    /**
+     * Récupérer les castings d'un movie donné + le sinfos de Person
+     * Méthode Query Builder
+     * 
+     * @param Movie $movie
+     * @return Casting[]
+     */
+    public function findByMovie($movie)
+    {
+        $qb = $this->createQueryBuilder('c')
+                    ->join('c.person', 'p')
+                    ->addSelect('p')
+                    ->where('c.movie = :myMovie')
+                    ->setParameter('myMovie', $movie)
+                    ;
+        return $qb->getQuery()->getResult();
+        ;
+    }
+
 
     // /**
     //  * @return Casting[] Returns an array of Casting objects
