@@ -25,3 +25,8 @@ App\Entity\Casting:
         creditOrder: '<numberBetween(1, 30)>'
         person: '@person_*'
         movie: '@movie_*'
+
+App\Entity\Department:
+    department_{1..50}:
+        name: '<word()>' 
+        createdAt: '<date_create()>'
