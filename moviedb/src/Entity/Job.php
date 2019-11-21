@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
  */
-class Person
+class Job
 {
     /**
      * @ORM\Id()
@@ -34,19 +34,18 @@ class Person
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Casting", mappedBy="person", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="jobs")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $castings;
+    private $department;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="person", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="job", orphanRemoval=true)
      */
     private $teams;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
-        $this->castings = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }
 
@@ -91,33 +90,14 @@ class Person
         return $this;
     }
 
-    /**
-     * @return Collection|Casting[]
-     */
-    public function getCastings(): Collection
+    public function getDepartment(): ?Department
     {
-        return $this->castings;
+        return $this->department;
     }
 
-    public function addCasting(Casting $casting): self
+    public function setDepartment(?Department $department): self
     {
-        if (!$this->castings->contains($casting)) {
-            $this->castings[] = $casting;
-            $casting->setPerson($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCasting(Casting $casting): self
-    {
-        if ($this->castings->contains($casting)) {
-            $this->castings->removeElement($casting);
-            // set the owning side to null (unless already changed)
-            if ($casting->getPerson() === $this) {
-                $casting->setPerson(null);
-            }
-        }
+        $this->department = $department;
 
         return $this;
     }
@@ -134,7 +114,7 @@ class Person
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
-            $team->setPerson($this);
+            $team->setJob($this);
         }
 
         return $this;
@@ -145,12 +125,11 @@ class Person
         if ($this->teams->contains($team)) {
             $this->teams->removeElement($team);
             // set the owning side to null (unless already changed)
-            if ($team->getPerson() === $this) {
-                $team->setPerson(null);
+            if ($team->getJob() === $this) {
+                $team->setJob(null);
             }
         }
 
         return $this;
     }
-
 }
