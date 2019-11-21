@@ -40,6 +40,8 @@ class Department
 
     public function __construct()
     {
+        // Ajout de cette ligne pour qu'un nouvel objet de la classe Department aie une valeur par defaut pour la propriété createdAt
+        $this->createdAt = new \DateTime();
         $this->jobs = new ArrayCollection();
     }
 
