@@ -8,7 +8,7 @@
 
     <ul>
         {% for department in departments %}
-            <li>{{ department.name }}</li>
+            <li><a href="{{ path('admin_department_edit', {'department': department.id}) }}">{{ department.name }}</a></li>
         {% endfor %}
     </ul>
 

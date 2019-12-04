@@ -56,10 +56,21 @@ class DepartmentController extends AbstractController
     /**
      * @Route("/admin/department/{department}/edit", name="admin_department_edit")
      */
-    public function edit(Department $department)
+    public function edit(Request $request, Department $department)
     {
         // On obtient l'objet $department grâce à la route (et donc au ParamConverter)
         $form = $this->createForm(DepartmentType::class, $department);
+
+        // On relie les données reçues en POST avec le formulaire
+        $form->handleRequest($request);
+
+        // Il est nécessaire d'enregistrer les données
+        // Seulement si le formulaire a été envoyé et qu'il est valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($department);
+            $em->flush();
+        }
 
         return $this->render('admin/department/edit.html.twig', [
             'formDepartment' => $form->createView(),
