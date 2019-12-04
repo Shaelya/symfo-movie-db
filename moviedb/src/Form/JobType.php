@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Job;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,13 @@ class JobType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('createdAt')
-            ->add('updatedAt')
+            // ->add('createdAt')
+            // ->add('updatedAt')
             ->add('department')
+            ->add('save', SubmitType::class, [
+                'label' => 'Envoyer'
+            ])
+
         ;
     }
 

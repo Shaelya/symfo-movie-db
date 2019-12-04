@@ -16,7 +16,9 @@ class DepartmentType extends AbstractType
             ->add('name')
             // ->add('createdAt')
             // ->add('updatedAt')
-            ->add('envoyer', SubmitType::class)
+            ->add('save', SubmitType::class, [
+                'label' => 'Envoyer'
+            ])
 
         ;
     }

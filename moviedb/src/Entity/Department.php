@@ -45,6 +45,14 @@ class Department
         $this->jobs = new ArrayCollection();
     }
 
+     /**
+     * Fonction qui permet d'afficher facilement un objet, on précise les infos à afficher
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

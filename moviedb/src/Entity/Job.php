@@ -46,6 +46,7 @@ class Job
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->teams = new ArrayCollection();
     }
 
