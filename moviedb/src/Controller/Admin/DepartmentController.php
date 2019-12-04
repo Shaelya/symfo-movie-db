@@ -77,4 +77,21 @@ class DepartmentController extends AbstractController
             'department' => $department, 
         ]);
     }
+
+    /**
+     * @Route("/admin/department/delete", name="admin_department_delete", methods={"POST"})
+     */
+    public function delete(Request $request)
+    {
+        $id = $request->request->get('department_id');
+        $department = $this->getDoctrine()->getRepository(Department::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        // la méthode remove de l'entityManager permet de supprimer l'objet de la BDD
+        $em->remove($department);
+        $em->flush();
+
+        //Une fois fini, on redirige vers la liste des departments
+        return $this->redirectToRoute('admin_department');
+    }
 }
