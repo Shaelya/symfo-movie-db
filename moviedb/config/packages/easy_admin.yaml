@@ -1,0 +1,11 @@
+easy_admin:
+   entities:
+        # List the entity class name you want to manage
+       - App\Entity\Movie
+       - App\Entity\Person
+       - App\Entity\Casting
+       - App\Entity\Department
+       - App\Entity\Genre
+       - App\Entity\Job
+       - App\Entity\Team
+
