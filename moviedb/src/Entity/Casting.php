@@ -11,6 +11,14 @@ class Casting
 {
 
     /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $role;
@@ -21,18 +29,24 @@ class Casting
     private $creditOrder;
 
     /**
-     * @ORM\Id
+     * 
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="castings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $person;
 
     /**
-     * @ORM\Id
+     * 
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="castings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $movie;
+
+    public function __toString()
+    {
+        return $this->role;
+    }
+
 
     public function getId(): ?int
     {
