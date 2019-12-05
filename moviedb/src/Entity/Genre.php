@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GenreRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Genre
 {
@@ -114,5 +115,14 @@ class Genre
         }
 
         return $this;
+    }
+    
+     /**
+     * Cette annotation permet d'automatiser l'attribution d'une nouvelle date pour le champ updatedAt lors d'une modification
+     * @ORM\PreUpdate
+     */
+    public function changeUpdatedAtOnPersist()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }
